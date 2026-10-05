@@ -8,6 +8,7 @@ import React, { useRef, useState } from 'react';
 import { Candle, NextCandleForecast } from '../types';
 import { CalculatedFeatures } from '../services/featureEngine';
 import { Eye, Layers, Maximize2, Sparkles, Clock, Lock } from 'lucide-react';
+import { formatDubaiTime, getDubaiTimeInterval, parseTimeframeToMinutes } from '../utils/timeFormat';
 
 interface InteractiveChartProps {
   candles: Candle[];
