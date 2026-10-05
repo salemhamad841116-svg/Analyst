@@ -56,8 +56,8 @@ export const InteractiveChart: React.FC<InteractiveChartProps> = ({
 
   // Include forecast range in viewport bounds
   if (forecast?.expectedRange) {
-    if (forecast?.expectedRange.low < minPrice) minPrice = forecast?.expectedRange.low;
-    if (forecast?.expectedRange.high > maxPrice) maxPrice = forecast?.expectedRange.high;
+    if ((forecast?.expectedRange?.low ?? minPrice) < minPrice) minPrice = forecast.expectedRange.low;
+    if ((forecast?.expectedRange?.high ?? maxPrice) > maxPrice) maxPrice = forecast.expectedRange.high;
   }
 
   // Add margin
@@ -82,9 +82,9 @@ export const InteractiveChart: React.FC<InteractiveChartProps> = ({
 
   const forecastSignal =
     forecast?.forecastSignal ||
-    (forecast?.bullishProbability > forecast?.bearishProbability + 0.08
+    ((forecast?.bullishProbability ?? 0) > (forecast?.bearishProbability ?? 0) + 0.08
       ? 'NEXT BUY'
-      : forecast?.bearishProbability > forecast?.bullishProbability + 0.08
+      : (forecast?.bearishProbability ?? 0) > (forecast?.bullishProbability ?? 0) + 0.08
       ? 'NEXT SELL'
       : 'NEXT NEUTRAL');
 
@@ -317,9 +317,9 @@ export const InteractiveChart: React.FC<InteractiveChartProps> = ({
               {(() => {
                 const lastX = getX(sliceCandles.length - 1);
                 const nextX = lastX + (plotWidth / sliceCandles.length) * 1.6;
-                const lowY = getY(forecast?.expectedRange.low);
-                const highY = getY(forecast?.expectedRange.high);
-                const lastCloseY = getY(forecast?.currentPrice);
+                const lowY = getY(forecast?.expectedRange?.low ?? minPrice);
+                const highY = getY(forecast?.expectedRange?.high ?? maxPrice);
+                const lastCloseY = getY(forecast?.currentPrice ?? minPrice);
                 const isBullish = forecastSignal === 'NEXT BUY';
                 const isBearish = forecastSignal === 'NEXT SELL';
                 const coneColor = isBullish ? '#10b981' : isBearish ? '#f43f5e' : '#64748b';
@@ -388,7 +388,7 @@ export const InteractiveChart: React.FC<InteractiveChartProps> = ({
                         fontFamily="sans-serif"
                         fontWeight="900"
                       >
-                        🔮 {forecastSignal} {Math.round(forecast?.confidence * 100)}%
+                        🔮 {forecastSignal} {Math.round((forecast?.confidence ?? 0) * 100)}%
                       </text>
                       <text
                         x="7"

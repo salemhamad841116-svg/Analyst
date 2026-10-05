@@ -28,7 +28,7 @@ export function explainPrediction(
   regime: RegimeAnalysisResult,
   higherTimeframeCandle?: Candle
 ): ForecastExplanation {
-  const isBullish = forecast.direction === 'BULLISH';
+  const isBullish = forecast?.direction === 'BULLISH';
   const supportingFactors: ExplainableFactor[] = [];
   const contradictingFactors: ExplainableFactor[] = [];
 
@@ -132,7 +132,7 @@ export function explainPrediction(
   if (features.market_structure === 'BULLISH_BOS') {
     if (isBullish) {
       supportingFactors.push({
-        factor: `${forecast.timeframe} Market Structure`,
+        factor: `${forecast?.timeframe || 'Active'} Market Structure`,
         contribution: +14,
         type: 'supporting',
         description: 'Confirmed Break of Structure (BOS) printing higher swing high on aggressive volume.',
@@ -148,7 +148,7 @@ export function explainPrediction(
   } else if (features.market_structure === 'BEARISH_BOS') {
     if (!isBullish) {
       supportingFactors.push({
-        factor: `${forecast.timeframe} Market Structure`,
+        factor: `${forecast?.timeframe || 'Active'} Market Structure`,
         contribution: +14,
         type: 'supporting',
         description: 'Confirmed Bearish Break of Structure breaking swing low demand levels.',
@@ -206,12 +206,12 @@ export function explainPrediction(
   return {
     forecast,
     primaryRationale: isBullish
-      ? `Model assigns ${(forecast.bullishProbability * 100).toFixed(0)}% bullish probability driven by strong EMA structure, positive VWAP premium, and supportive 15m order flow confluence.`
-      : `Model assigns ${(forecast.bearishProbability * 100).toFixed(0)}% bearish probability due to breakdown beneath 21 EMA and session VWAP alongside negative momentum expansion.`,
+      ? `Model assigns ${((forecast?.bullishProbability || 0) * 100).toFixed(0)}% bullish probability driven by strong EMA structure, positive VWAP premium, and supportive 15m order flow confluence.`
+      : `Model assigns ${((forecast?.bearishProbability || 0) * 100).toFixed(0)}% bearish probability due to breakdown beneath 21 EMA and session VWAP alongside negative momentum expansion.`,
     supportingFactors,
     contradictingFactors,
     netEvidenceScore,
-    confidenceContext: `Confidence score (${(forecast.confidence * 100).toFixed(0)}%) is calibrated using ${forecast.sampleSize.toLocaleString()} historical out-of-sample candles. Data quality is verified as ${forecast.dataQuality}.`,
+    confidenceContext: `Confidence score (${((forecast?.confidence || 0) * 100).toFixed(0)}%) is calibrated using ${(forecast?.sampleSize || 0).toLocaleString()} historical out-of-sample candles. Data quality is verified as ${forecast?.dataQuality || 'MEDIUM'}.`,
     timeframeAlignment: {
       alignedTimeframes: ['5s', '1m', '5m', '15m'],
       divergingTimeframes: ['1h', '4h'],

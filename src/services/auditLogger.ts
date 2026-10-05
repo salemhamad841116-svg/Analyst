@@ -41,9 +41,9 @@ export function recordPrePrediction(
   forecast: NextCandleForecast,
   regime: MarketRegime
 ): PredictionAuditRecord {
-  const tfSec = TIMEFRAME_SECONDS[forecast.timeframe] || 300;
+  const tfSec = TIMEFRAME_SECONDS[forecast?.timeframe || '5m'] || 300;
   const now = Date.now();
-  const targetTs = forecast.targetBarTimestamp || now + tfSec * 1000;
+  const targetTs = forecast?.targetBarTimestamp || now + tfSec * 1000;
 
   const formatIso = (ts: number) =>
     new Date(ts).toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
@@ -54,30 +54,30 @@ export function recordPrePrediction(
     predictionTime: formatIso(now),
     targetBarTime: formatIso(targetTs),
     targetBarTimestamp: targetTs,
-    symbol: forecast.symbol,
-    timeframe: forecast.timeframe,
+    symbol: forecast?.symbol || 'UNKNOWN',
+    timeframe: forecast?.timeframe || '5m',
     strategyVersion: 'USE-1.4.2',
-    modelVersion: forecast.modelVersion,
-    inputDataVersion: `ds_${forecast.symbol.replace('/', '_').toLowerCase()}_${forecast.timeframe}`,
+    modelVersion: forecast?.modelVersion || 'v1',
+    inputDataVersion: `ds_${(forecast?.symbol || 'UNKNOWN').replace('/', '_').toLowerCase()}_${forecast?.timeframe || '5m'}`,
     marketRegime: regime,
     direction:
-      forecast.forecastSignal === 'NEXT BUY' || forecast.direction === 'BULLISH'
+      forecast?.forecastSignal === 'NEXT BUY' || forecast?.direction === 'BULLISH'
         ? 'NEXT BUY'
-        : forecast.forecastSignal === 'NEXT SELL' || forecast.direction === 'BEARISH'
+        : forecast?.forecastSignal === 'NEXT SELL' || forecast?.direction === 'BEARISH'
         ? 'NEXT SELL'
         : 'NEXT NEUTRAL',
     probabilities: {
-      bullish: forecast.bullishProbability,
-      bearish: forecast.bearishProbability,
-      neutral: forecast.neutralProbability,
+      bullish: forecast?.bullishProbability || 0,
+      bearish: forecast?.bearishProbability || 0,
+      neutral: forecast?.neutralProbability || 0,
     },
-    confidence: forecast.confidence,
-    expectedRange: forecast.expectedRange,
-    inputFeatures: forecast.featuresUsed || {
-      pivot: forecast.currentPrice,
-      state: forecast.direction === 'BULLISH' ? 1 : forecast.direction === 'BEARISH' ? -1 : 0,
-      atr: forecast.expectedVolatilityPct,
-      momentum: forecast.direction,
+    confidence: forecast?.confidence || 0.5,
+    expectedRange: forecast?.expectedRange || { low: 0, high: 0 },
+    inputFeatures: forecast?.featuresUsed || {
+      pivot: forecast?.currentPrice || 0,
+      state: forecast?.direction === 'BULLISH' ? 1 : forecast?.direction === 'BEARISH' ? -1 : 0,
+      atr: forecast?.expectedVolatilityPct || 0,
+      momentum: forecast?.direction || 'NEUTRAL',
     },
     actualResult: 'PENDING',
     evaluationStatus: 'AWAITING_CLOSE',

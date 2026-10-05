@@ -37,9 +37,9 @@ export const NextCandleForecastCard: React.FC<NextCandleForecastCardProps> = ({
   // Let's resolve what we show based on the AST forecast outputs
   let direction = 'NO SIGNAL';
   if (forecast?.direction) {
-    if (forecast?.direction.includes('BUY') || forecast?.direction === 'UP') direction = 'UP';
-    else if (forecast?.direction.includes('SELL') || forecast?.direction === 'DOWN') direction = 'DOWN';
-    else if (forecast?.direction.includes('NEUTRAL')) direction = 'NEUTRAL';
+    if (forecast?.direction?.includes('BUY') || forecast?.direction === 'UP') direction = 'UP';
+    else if (forecast?.direction?.includes('SELL') || forecast?.direction === 'DOWN') direction = 'DOWN';
+    else if (forecast?.direction?.includes('NEUTRAL')) direction = 'NEUTRAL';
   } else {
     // If no explicit direction string, deduce from probs
     if (bullPct > bearPct + 5 && bullPct > 40) direction = 'UP';
@@ -47,7 +47,7 @@ export const NextCandleForecastCard: React.FC<NextCandleForecastCardProps> = ({
     else if (neutPct > 40) direction = 'NEUTRAL';
   }
 
-  const confPct = Math.round(forecast?.confidence * 100) || Math.max(bullPct, bearPct, neutPct);
+  const confPct = Math.round((forecast?.confidence ?? 0) * 100) || Math.max(bullPct, bearPct, neutPct);
   
   // Real Evaluated metrics from the AST
   const realEvaluatedCount = forecast?.accuracyStats?.evaluatedCount || 0; 
@@ -68,7 +68,7 @@ export const NextCandleForecastCard: React.FC<NextCandleForecastCardProps> = ({
       <div className="flex justify-between items-start pb-4 border-b border-slate-800 relative z-10">
         <div>
           <h2 className="text-slate-400 text-xs font-black tracking-widest uppercase mb-1">
-            {forecast?.symbol.includes('SMC') ? 'SMC' : forecast?.symbol} — NEXT CANDLE FORECAST
+            {forecast?.symbol?.includes('SMC') ? 'SMC' : (forecast?.symbol || 'Unknown')} — NEXT CANDLE FORECAST
           </h2>
           <div className="text-3xl font-black text-white">Next Candle</div>
         </div>
