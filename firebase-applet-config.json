@@ -1,0 +1,12 @@
+{
+  "projectId": "chathsm",
+  "appId": "1:929388588152:web:c4fbc70b26c52aeab1118d",
+  "apiKey": "AIzaSyDLds0BqWkES64kKR98X2ZXzXlnFGm1V-k",
+  "authDomain": "chathsm.firebaseapp.com",
+  "firestoreDatabaseId": "ai-studio-db17dec1-ffc0-48ad-9ad6-abd4eb47e8b3",
+  "storageBucket": "chathsm.firebasestorage.app",
+  "messagingSenderId": "929388588152",
+  "measurementId": "",
+  "oAuthClientId": "929388588152-m1li531austbv1rjtjoh11va5c73dj4m.apps.googleusercontent.com",
+  "recaptchaSiteKey": ""
+}

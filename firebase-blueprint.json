@@ -1,0 +1,27 @@
+{
+  "entities": {
+    "AuditLogEntry": {
+      "title": "AuditLogEntry",
+      "description": "Log of a platform builder action.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userPrompt": { "type": "string" },
+        "parsedIntent": { "type": "string" },
+        "actionPlan": { "type": "string" },
+        "target": { "type": "string" },
+        "beforeState": { "type": "string" },
+        "afterState": { "type": "string" },
+        "timestamp": { "type": "number" },
+        "status": { "type": "string" }
+      },
+      "required": ["userId", "userPrompt", "timestamp", "status"]
+    }
+  },
+  "firestore": {
+    "/auditLogs/{logId}": {
+      "schema": "AuditLogEntry",
+      "description": "Collection of all builder actions."
+    }
+  }
+}
