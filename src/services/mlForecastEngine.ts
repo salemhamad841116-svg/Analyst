@@ -355,6 +355,8 @@ export function generateNextCandleForecast(
       momentum: f.rsi_14 > 50 ? 'BULLISH' : 'BEARISH',
     },
   };
+
+  return baseForecast;
 }
 
 /**
