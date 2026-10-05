@@ -73,6 +73,7 @@ export default function App() {
 
   // Source Bundle Modal State
   const [showSourceBundleModal, setShowSourceBundleModal] = useState<boolean>(false);
+  const [lastAnalysisRunId, setLastAnalysisRunId] = useState<string>('');
 
   // Initialize Default Strategy from Pine Script
   const initialStrategy = useMemo(() => {
