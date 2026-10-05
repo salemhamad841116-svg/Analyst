@@ -12,6 +12,28 @@ import "./index.css";
 
 clearRuntimeProbe();
 initializeRuntimeOriginProbe();
+
+// Force unregister of old Service Workers to clear aggressive caching
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    for (const registration of registrations) {
+      registration.unregister().then(
+        (success) => console.log('SW unregistered:', success)
+      );
+    }
+  });
+}
+
+// Force clear Cache Storage so old files aren't served
+if ('caches' in window) {
+  caches.keys().then((names) => {
+    for (const name of names) {
+      caches.delete(name).then(
+        (success) => console.log('Cache cleared:', name, success)
+      );
+    }
+  });
+}
 initializeRuntimeErrorGuard();
 
 const rootElement =
